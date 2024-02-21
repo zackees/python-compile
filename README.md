@@ -1,5 +1,7 @@
 # python-compile
 
+![image](https://github.com/zackees/python-compile/assets/6856673/f4ed3f1c-c4b8-4cee-a63b-9717f3948376)
+
 Compile python apps to linux executables
 
 [![Linting](../../actions/workflows/lint.yml/badge.svg)](../../actions/workflows/lint.yml)
