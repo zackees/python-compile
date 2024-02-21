@@ -1,3 +1,5 @@
 include pyproject.toml
 include requirements.testing.txt
-include template_python_cmd/assets/example.txt
+include template_python_cmd/assets/demo_http_serer.py
+include src/python_compile/assets/debian-dockerfile
+include src/python_compile/assets/windows-docerfile

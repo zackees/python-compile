@@ -10,7 +10,7 @@ keywords = ["template-python-cmd"]
 license = { text = "BSD 3-Clause License" }
 classifiers = ["Programming Language :: Python :: 3"]
 dependencies = [
-
+    "docker-run-cmd~=1.0.9"
 ]
 # Change this with the version number bump.
 version = "1.0.0"
@@ -43,4 +43,4 @@ ignore_missing_imports = true
 disable_error_code = ["import-untyped"]
 
 [project.scripts]
-python_compile = "python_compile.cli:main"
+python-compile = "python_compile.cli:main"
