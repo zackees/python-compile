@@ -5,15 +5,20 @@ Unit test file.
 import os
 import unittest
 
-COMMAND = "python_compile"
-
 
 class MainTester(unittest.TestCase):
     """Main tester class."""
 
     def test_imports(self) -> None:
         """Test command line interface (CLI)."""
-        rtn = os.system(COMMAND)
+        cmd_list = [
+            "python-compile",
+            "--os",
+            "debian",
+            "--input",
+            "src/python_compile/assets/demo_http_server.py",
+        ]
+        rtn = os.system(" ".join(cmd_list))
         self.assertEqual(0, rtn)
 
 

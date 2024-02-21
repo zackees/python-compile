@@ -1,9 +1,10 @@
 """
 Main entry point.
 """
+
 import argparse
-import sys
 import os
+import sys
 from pathlib import Path
 
 from docker_run_cmd.api import docker_run
@@ -13,8 +14,10 @@ ASSETS = HERE / "assets"
 
 DOCKER_FILE_MAP = {
     "debian": ASSETS / "debian-dockerfile",
-    "windows": ASSETS / "windows-dockerfile",  # Work in progress - cross compilation through fedora
+    "windows": ASSETS
+    / "windows-dockerfile",  # Work in progress - cross compilation through fedora
 }
+
 
 def parse_args() -> argparse.Namespace:
     """Parse command-line arguments."""
@@ -26,7 +29,13 @@ def parse_args() -> argparse.Namespace:
         choices=DOCKER_FILE_MAP.keys(),
     )
     parser.add_argument(
-        "--py-path",
+        "--platform",
+        type=str,
+        help="If specified, then the docker platform will be used",
+        required=False,
+    )
+    parser.add_argument(
+        "--input",
         type=str,
         help="Which python file to run",
     )
@@ -39,7 +48,6 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-
 def main() -> int:
     """Main entry point for the template_python_cmd package."""
     args = parse_args()
@@ -50,7 +58,7 @@ def main() -> int:
         return 1
     dockerpath: Path = DOCKER_FILE_MAP[os_system]
     assert dockerpath.exists(), f"dockerpath {dockerpath} does not exist"
-    py_path = args.py_path or args.py_module_path
+    py_path = args.input
     py_path = Path(py_path).as_posix()
 
     assert py_path, "You must provide a python path"
@@ -58,7 +66,6 @@ def main() -> int:
     extra_files: dict[Path, Path] = {}
     if args.requirements:
         extra_files[Path(args.requirements)] = Path("requirements.txt")
-
 
     docker_run(
         name=f"python-compile-{os_system}",
@@ -68,6 +75,7 @@ def main() -> int:
         extra_files=extra_files,
     )
     return 0
+
 
 if __name__ == "__main__":
     sys.argv.append("--os")
