@@ -1,18 +1,18 @@
 # python-compile
 
+Compile python apps to linux executables
+
 [![Linting](../../actions/workflows/lint.yml/badge.svg)](../../actions/workflows/lint.yml)
 [![MacOS_Tests](../../actions/workflows/push_macos.yml/badge.svg)](../../actions/workflows/push_macos.yml)
 [![Ubuntu_Tests](../../actions/workflows/push_ubuntu.yml/badge.svg)](../../actions/workflows/push_ubuntu.yml)
 [![Win_Tests](../../actions/workflows/push_win.yml/badge.svg)](../../actions/workflows/push_win.yml)
 ![image](https://github.com/zackees/python-compile/assets/6856673/f4ed3f1c-c4b8-4cee-a63b-9717f3948376)
 
-Compile python apps to linux executables
-
-
 
 This project will use docker to compile your one file python app into a binary that's runnable on many
-linux systems.
-Work in progress remains for building windows apps via the docker system.
+linux systems. This is the easiest way to build an app and may work directly out of the box for many setups.
+
+Work in progress remains for building Windows/MacOS apps via the docker system.
 
 To develop software, run `. ./activate.sh`
 
@@ -77,6 +77,9 @@ if __name__ == '__main__':
 
 ```
 
+# Notes
+
+Right now we use the nuitka build. If you want custom build options then feel free to create a PR.
 
 # Windows
 
