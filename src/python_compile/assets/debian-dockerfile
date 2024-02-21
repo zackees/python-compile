@@ -1,0 +1,35 @@
+FROM python:3.10
+
+# Install yt-dlp dependencies and yt-dlp itself
+# Adding necessary packages including ffmpeg
+RUN apt-get update && apt-get install -y \
+    dos2unix \
+    patchelf \
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install --no-cache-dir nuitka==2.0.3
+
+# install gzip
+RUN apt-get update && apt-get install -y \
+    gzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set the working directory in the container
+WORKDIR /host_dir
+
+ARG REQUIREMENTS_FILE
+COPY ${REQUIREMENTS_FILE} ./requirements.txt
+
+# Build the entrypoint script in the container.
+RUN echo '#!/bin/sh' > /entrypoint.sh && \
+    echo 'cd /host_dir' >> /entrypoint.sh && \
+    echo 'if [ -f "requirements.txt" ]; then pip install -r requirements.txt; fi' >> /entrypoint.sh && \
+    echo 'python -m nuitka --standalone --follow-imports --onefile --lto=yes --python-flag=-OO "$@"' >> /entrypoint.sh && \
+    echo 'for file in $(find . -type f -name "*.bin"); do chmod +x "$file"; done' >> /entrypoint.sh && \
+    echo 'for file in $(find . -type f -name "*.bin"); do gzip "$file"; done' >> /entrypoint.sh && \
+    chmod +x /entrypoint.sh
+
+# Make the entrypoint script executable
+RUN chmod +x /entrypoint.sh
+
+# Set the entrypoint to use /bin/sh
+ENTRYPOINT ["sh", "/entrypoint.sh"]

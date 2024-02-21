@@ -51,16 +51,18 @@ def main() -> int:
     dockerpath: Path = DOCKER_FILE_MAP[os_system]
     assert dockerpath.exists(), f"dockerpath {dockerpath} does not exist"
     py_path = args.py_path or args.py_module_path
+    py_path = Path(py_path).as_posix()
 
     assert py_path, "You must provide a python path"
 
     extra_files: dict[Path, Path] = {}
     if args.requirements:
         extra_files[Path(args.requirements)] = Path("requirements.txt")
-    
+
+
     docker_run(
         name=f"python-compile-{os_system}",
-        dockerfile_or_url=str(dockerpath),
+        dockerfile_or_url=dockerpath,
         cwd=os.getcwd(),
         cmd_list=[py_path],
         extra_files=extra_files,
