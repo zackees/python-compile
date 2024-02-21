@@ -1,14 +1,14 @@
 # python-compile
-
-![image](https://github.com/zackees/python-compile/assets/6856673/f4ed3f1c-c4b8-4cee-a63b-9717f3948376)
-
-Compile python apps to linux executables
-
 [![Linting](../../actions/workflows/lint.yml/badge.svg)](../../actions/workflows/lint.yml)
 
 [![MacOS_Tests](../../actions/workflows/push_macos.yml/badge.svg)](../../actions/workflows/push_macos.yml)
 [![Ubuntu_Tests](../../actions/workflows/push_ubuntu.yml/badge.svg)](../../actions/workflows/push_ubuntu.yml)
 [![Win_Tests](../../actions/workflows/push_win.yml/badge.svg)](../../actions/workflows/push_win.yml)
+![image](https://github.com/zackees/python-compile/assets/6856673/f4ed3f1c-c4b8-4cee-a63b-9717f3948376)
+
+Compile python apps to linux executables
+
+
 
 This project will use docker to compile your one file python app into a binary that's runnable on many
 linux systems.
