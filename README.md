@@ -20,8 +20,6 @@ Work in progress remains for building Windows/MacOS apps via the docker system.
 python-compile --os debian --input demo_http_server.py --requirements requirements.txt
 ```
 
-*demo_http_server.py*
-
 [demo_http_server](https://github.com/zackees/python-compile/blob/main/src/python_compile/assets/demo_http_server.py)
 
 # Notes
