@@ -1,6 +1,6 @@
 # python-compile
 
-Compile python apps to linux executables
+Compile python apps to linux executables using docker.
 
 [![Linting](../../actions/workflows/lint.yml/badge.svg)](../../actions/workflows/lint.yml)
 [![MacOS_Tests](../../actions/workflows/push_macos.yml/badge.svg)](../../actions/workflows/push_macos.yml)
