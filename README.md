@@ -14,8 +14,6 @@ linux systems. This is the easiest way to build an app and may work directly out
 
 Work in progress remains for building Windows/MacOS apps via the docker system.
 
-To develop software, run `. ./activate.sh`
-
 *Example*
 
 ```bash
