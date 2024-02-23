@@ -43,3 +43,7 @@ Run `./lint.sh` to find linting errors using `pylint`, `flake8` and `mypy`.
     * https://github.com/dockcross/dockcross
   * MacOS images
     * https://hub.docker.com/r/sickcodes/docker-osx
+
+# Releases
+
+  * 1.0.3: Native windows compile is available if the host is also windows.

@@ -9,6 +9,8 @@ from pathlib import Path
 
 from docker_run_cmd.api import docker_run
 
+from python_compile.native_windows_build import run_native_windows_build
+
 HERE = Path(__file__).parent
 ASSETS = HERE / "assets"
 
@@ -31,7 +33,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--platform",
         type=str,
-        help="If specified, then the docker platform will be used",
+        help="If specified, then the docker platform will be used, like linux/amd64",
         required=False,
     )
     parser.add_argument(
@@ -51,11 +53,19 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     """Main entry point for the template_python_cmd package."""
     args = parse_args()
-    print(args)
     os_system = args.os
     if not os_system:
         print("You must provide an os")
         return 1
+    if os_system == "windows":
+        if os.name != "nt":
+            print("You must run this on a windows machine")
+            return 1
+        rtn = run_native_windows_build(
+            app_py=args.input, requirements_txt=args.requirements
+        )
+        return rtn
+
     dockerpath: Path = DOCKER_FILE_MAP[os_system]
     assert dockerpath.exists(), f"dockerpath {dockerpath} does not exist"
     py_path = args.input
