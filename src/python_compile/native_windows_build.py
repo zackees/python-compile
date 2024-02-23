@@ -8,7 +8,7 @@ HERE = Path(__file__).parent
 VENV_PATH = HERE / "nuitka_venv"
 
 REQUIREMENTS = [
-    "nuitka==2.0.1",
+    "nuitka==2.0.3",
     "zstandard==0.17.0",
     "chardet==5.2.0",
     "ordered-set==4.1.0",
