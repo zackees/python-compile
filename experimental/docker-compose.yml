@@ -1,0 +1,13 @@
+version: '3.3'
+# This is used for development purposes only.
+# This docker-compose will allow live editing
+# of the codebase without having to rebuild the
+# container. it does this by mounting the twdb
+# folder from the host machine.
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "80:80"
+      - "23:22"
