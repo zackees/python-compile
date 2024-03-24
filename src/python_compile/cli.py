@@ -9,7 +9,7 @@ from pathlib import Path
 
 from docker_run_cmd.api import docker_run
 
-from python_compile.native_windows_build import run_native_windows_build
+from python_compile.native_build import run_native_build
 
 HERE = Path(__file__).parent
 ASSETS = HERE / "assets"
@@ -18,6 +18,7 @@ DOCKER_FILE_MAP = {
     "debian": ASSETS / "debian-dockerfile",
     "windows": ASSETS
     / "windows-dockerfile",  # Work in progress - cross compilation through fedora
+    "native": None,
 }
 
 
@@ -38,12 +39,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--input",
-        type=str,
+        type=Path,
         help="Which python file to run",
     )
     parser.add_argument(
         "--requirements",
-        type=str,
+        type=Path,
         help="Which requirements file to use",
         required=False,
     )
@@ -57,16 +58,23 @@ def main() -> int:
     if not os_system:
         print("You must provide an os")
         return 1
+    app_py = args.input
+    requirements_txt = args.requirements
     if os_system == "windows":
         if os.name != "nt":
+            # Work in progress, compile windows apps from docker.
             print("You must run this on a windows machine")
             return 1
-        rtn = run_native_windows_build(
-            app_py=args.input, requirements_txt=args.requirements
-        )
+        rtn = run_native_build(app_py=app_py, requirements_txt=requirements_txt)
+        return rtn
+    if os_system == "native":
+        run_native_build(app_py=app_py, requirements_txt=requirements_txt)
         return rtn
 
-    dockerpath: Path = DOCKER_FILE_MAP[os_system]
+    dockerpath: Path | None = DOCKER_FILE_MAP.get(os_system)
+    if dockerpath is None:
+        print(f"OS {os_system} is not supported")
+        return 1
     assert dockerpath.exists(), f"dockerpath {dockerpath} does not exist"
     py_path = args.input
     py_path = Path(py_path).as_posix()
