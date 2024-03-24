@@ -1,6 +1,10 @@
+import os
+import shutil
 import subprocess
 import sys
 import tempfile
+import warnings
+from atexit import register
 from pathlib import Path
 
 from isolated_environment import IsolatedEnvironment, Requirements
@@ -42,19 +46,29 @@ def generate_cmd_list(app_py: Path) -> list[str]:
     return cmd_list
 
 
-def run_native_build(app_py: Path, requirements_txt: Path) -> int:
-    """Run the native windows build."""
+def clean_dir(path: str) -> None:
+    """Clean the directory."""
+    try:
+        shutil.rmtree(path, ignore_errors=True)
+    except Exception as e:  # pylint: disable=broad-except
+        warnings.warn(f"Failed to clean directory: {path} with error: {e}")
 
+
+def run_native_build(app_py: Path, requirements_txt: Path | None) -> int:
+    """Run the native windows build."""
     print("Running native build")
-    with tempfile.TemporaryDirectory() as tmp_dir:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp_dir:
         print(f"Creating temporary directory: {tmp_dir}")
+        full_tmp_path = os.path.abspath(tmp_dir)
+        register(clean_dir, full_tmp_path)
         env_path = Path(tmp_dir) / "nuitka_venv"
         iso_env = IsolatedEnvironment(env_path, REQS)
-        subprocess.run(
-            ["pip", "install", "-r", requirements_txt],
-            env=iso_env.environment(),
-            check=True,
-        )
+        if requirements_txt:
+            subprocess.run(
+                ["pip", "install", "-r", requirements_txt],
+                env=iso_env.environment(),
+                check=True,
+            )
         cmd_list: list[str] = generate_cmd_list(app_py)
         subprocess.run(
             cmd_list,

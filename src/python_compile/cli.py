@@ -5,11 +5,20 @@ Main entry point.
 import argparse
 import os
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 
 from docker_run_cmd.api import docker_run
 
 from python_compile.native_build import run_native_build
+
+
+@dataclass
+class Args:
+    app_py: Path
+    requirements: Path | None = None
+    os: str | None = None
+
 
 HERE = Path(__file__).parent
 ASSETS = HERE / "assets"
@@ -30,6 +39,7 @@ def parse_args() -> argparse.Namespace:
         type=str,
         help="Which os to use",
         choices=DOCKER_FILE_MAP.keys(),
+        required=False,
     )
     parser.add_argument(
         "--platform",
@@ -51,14 +61,10 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main() -> int:
+def run(args: Args) -> int:
     """Main entry point for the template_python_cmd package."""
-    args = parse_args()
     os_system = args.os
-    if not os_system:
-        print("You must provide an os")
-        return 1
-    app_py = args.input
+    app_py = args.app_py
     requirements_txt = args.requirements
     if os_system == "windows":
         if os.name != "nt":
@@ -67,8 +73,8 @@ def main() -> int:
             return 1
         rtn = run_native_build(app_py=app_py, requirements_txt=requirements_txt)
         return rtn
-    if os_system == "native":
-        run_native_build(app_py=app_py, requirements_txt=requirements_txt)
+    if os_system is None or os_system == "native":
+        rtn = run_native_build(app_py=app_py, requirements_txt=requirements_txt)
         return rtn
 
     dockerpath: Path | None = DOCKER_FILE_MAP.get(os_system)
@@ -76,10 +82,8 @@ def main() -> int:
         print(f"OS {os_system} is not supported")
         return 1
     assert dockerpath.exists(), f"dockerpath {dockerpath} does not exist"
-    py_path = args.input
-    py_path = Path(py_path).as_posix()
-
-    assert py_path, "You must provide a python path"
+    py_path = args.app_py
+    assert Path(py_path).as_posix(), "You must provide a python path"
 
     extra_files: dict[Path, Path] = {}
     if args.requirements:
@@ -93,6 +97,15 @@ def main() -> int:
         extra_files=extra_files,
     )
     return 0
+
+
+def main() -> int:
+    cli_args = parse_args()
+    os_system = cli_args.os
+    app_py = cli_args.input
+    requirements_txt = cli_args.requirements
+    args = Args(app_py=app_py, requirements=requirements_txt, os=os_system)
+    return run(args)
 
 
 if __name__ == "__main__":
