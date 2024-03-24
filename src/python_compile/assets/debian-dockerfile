@@ -21,11 +21,13 @@ COPY ${REQUIREMENTS_FILE} ./requirements.txt
 
 # Build the entrypoint script in the container.
 RUN echo '#!/bin/sh' > /entrypoint.sh && \
-    echo 'cd /host_dir' >> /entrypoint.sh && \
-    echo 'if [ -f "requirements.txt" ]; then pip install -r requirements.txt; fi' >> /entrypoint.sh && \
-    echo 'python -m nuitka --standalone --follow-imports --onefile --lto=yes --python-flag=-OO "$@"' >> /entrypoint.sh && \
-    echo 'for file in $(find . -type f -name "*.bin"); do chmod +x "$file"; done' >> /entrypoint.sh && \
-    echo 'for file in $(find . -type f -name "*.bin"); do gzip "$file"; done' >> /entrypoint.sh && \
+    echo 'mkdir /tmp_dir' >> /entrypoint.sh && \
+    echo 'cd /tmp_dir' >> /entrypoint.sh && \
+    echo 'if [ -f "/host_dir/requirements.txt" ]; then pip install -r /host_dir/requirements.txt; fi' >> /entrypoint.sh && \
+    echo 'python -m nuitka --standalone --follow-imports --onefile --lto=yes --python-flag=-OO /host_dir/"$@"' >> /entrypoint.sh && \
+    echo 'for file in $(find /tmp_dir -type f -name "*.bin"); do chmod +x "$file"; done' >> /entrypoint.sh && \
+    echo 'for file in $(find ;/tmp_dir -type f -name "*.bin"); do gzip "$file"; done' >> /entrypoint.sh && \
+    echo 'mv *.gz /host_dir/' >> /entrypoint.sh && \
     chmod +x /entrypoint.sh
 
 # Make the entrypoint script executable
