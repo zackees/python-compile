@@ -29,10 +29,6 @@ class Args:
     os: str | None = None
 
 
-HERE = Path(__file__).parent
-ASSETS = HERE / "assets"
-
-
 def docker_build(
     os_system: str, py_path: Path, requirements: Path | None, wheel: Path | None
 ) -> int:
