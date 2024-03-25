@@ -24,6 +24,7 @@ RUN echo '#!/bin/sh' > /entrypoint.sh && \
     echo 'mkdir /tmp_dir' >> /entrypoint.sh && \
     echo 'cd /tmp_dir' >> /entrypoint.sh && \
     echo 'if [ -f "/host_dir/requirements.txt" ]; then pip install -r /host_dir/requirements.txt; fi' >> /entrypoint.sh && \
+    echo 'if [ -f "/host_dir/.compile.whl" ]; then pip install -r /host_dir/.compile.whl; fi' >> /entrypoint.sh && \
     echo 'python -m nuitka --standalone --follow-imports --onefile --lto=yes --python-flag=-OO /host_dir/"$@"' >> /entrypoint.sh && \
     echo 'for file in $(find /tmp_dir -type f -name "*.bin"); do chmod +x "$file"; done' >> /entrypoint.sh && \
     echo 'for file in $(find ;/tmp_dir -type f -name "*.bin"); do gzip "$file"; done' >> /entrypoint.sh && \

@@ -39,9 +39,9 @@ def parse_args() -> argparse.Namespace:
         required=False,
     )
     parser.add_argument(
-        "--pip-install-path",
+        "--wheel",
         type=Path,
-        help="Which pip install path to use",
+        help="Optional wheel file to install",
         required=False,
     )
     return parser.parse_args()
@@ -52,11 +52,11 @@ def main() -> int:
     os_system = cli_args.os
     app_py = cli_args.input
     requirements_txt = cli_args.requirements
-    pip_install_path = cli_args.pip_install_path
+    wheel = cli_args.wheel
     args = Args(
         app_py=app_py,
         requirements=requirements_txt,
-        pip_install_path=pip_install_path,
+        wheel=wheel,
         os=os_system,
     )
     return python_compile(args)
@@ -65,6 +65,6 @@ def main() -> int:
 if __name__ == "__main__":
     sys.argv.append("--os")
     sys.argv.append("debian")
-    sys.argv.append("--py-path")
+    sys.argv.append("--input")
     sys.argv.append("src/python_compile/assets/demo_http_server.py")
     sys.exit(main())

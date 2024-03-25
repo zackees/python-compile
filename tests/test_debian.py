@@ -16,6 +16,10 @@ from python_compile.compile import python_compile
 HERE = Path(__file__).parent
 PROJECT_ROOT = HERE.parent
 DEMO_PY = PROJECT_ROOT / "src/python_compile/assets/demo_http_server.py"
+WHEEL = HERE / "data.whl"
+
+assert DEMO_PY.exists()
+assert WHEEL.exists()
 
 
 class NativeTester(unittest.TestCase):
@@ -34,6 +38,8 @@ class NativeTester(unittest.TestCase):
                     "src/python_compile/assets/demo_http_server.py",
                     "--os",
                     "debian",
+                    "--wheel",
+                    str(WHEEL),
                 ]
                 cmd_str = subprocess.list2cmdline(cmd_list)
                 print(f"Running: {cmd_str}")
@@ -55,7 +61,7 @@ class NativeTester(unittest.TestCase):
             os.chdir(tmp_dir)
             try:
                 shutil.copy(DEMO_PY, DEMO_PY.name)
-                args = Args(app_py=Path(DEMO_PY.name), os="debian")
+                args = Args(app_py=Path(DEMO_PY.name), os="debian", wheel=WHEEL)
                 rtn = python_compile(args)
                 self.assertEqual(0, rtn)
                 files = os.listdir(tmp_dir)

@@ -59,7 +59,7 @@ def full_path(path: Path | str) -> str:
 
 
 def run_native_build(
-    app_py: Path, requirements_txt: Path | None, pip_install_path: Path | None
+    app_py: Path, requirements_txt: Path | None, wheel: Path | None
 ) -> int:
     """Run the native windows build."""
     print("Running native build")
@@ -72,9 +72,9 @@ def run_native_build(
         if requirements_txt:
             print(f"Installing requirements from {full_path(requirements_txt)}")
             iso_env.run(["pip", "install", "-r", requirements_txt])
-        if pip_install_path:
-            print(f"Installing {full_path(pip_install_path)}")
-            iso_env.run(["pip", "install", pip_install_path])
+        if wheel:
+            print(f"Installing {full_path(wheel)}")
+            iso_env.run(["pip", "install", wheel])
         cmd_list: list[str] = generate_cmd_list(app_py)
         iso_env.run(cmd_list)
         basename = app_py.stem
