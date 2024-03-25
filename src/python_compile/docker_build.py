@@ -37,6 +37,7 @@ def docker_build(
     dockerpath = DOCKER_FILE_MAP.get(os_system)
     assert dockerpath is not None, f"Unknown os_system: {os_system}"
     extra_files: dict[Path, Path] = {}
+    extra_files[ASSETS / "entrypoint.sh"] = Path("entrypoint.sh")
     if requirements:
         extra_files[requirements] = Path("requirements.txt")
     if wheel:

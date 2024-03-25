@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     dos2unix \
     patchelf \
     && rm -rf /var/lib/apt/lists/* \
-    && pip install --no-cache-dir nuitka==2.1.3
+    && pip install --no-cache-dir nuitka==2.1.3 wheel
 
 # install gzip
 RUN apt-get update && apt-get install -y \
@@ -19,17 +19,7 @@ WORKDIR /host_dir
 ARG REQUIREMENTS_FILE
 COPY ${REQUIREMENTS_FILE} ./requirements.txt
 
-# Build the entrypoint script in the container.
-RUN echo '#!/bin/sh' > /entrypoint.sh && \
-    echo 'mkdir /tmp_dir' >> /entrypoint.sh && \
-    echo 'cd /tmp_dir' >> /entrypoint.sh && \
-    echo 'if [ -f "/host_dir/requirements.txt" ]; then pip install -r /host_dir/requirements.txt; fi' >> /entrypoint.sh && \
-    echo 'if [ -f "/host_dir/.compile.whl" ]; then pip install -r /host_dir/.compile.whl; fi' >> /entrypoint.sh && \
-    echo 'python -m nuitka --standalone --follow-imports --onefile --lto=yes --python-flag=-OO /host_dir/"$@"' >> /entrypoint.sh && \
-    echo 'for file in $(find /tmp_dir -type f -name "*.bin"); do chmod +x "$file"; done' >> /entrypoint.sh && \
-    echo 'for file in $(find ;/tmp_dir -type f -name "*.bin"); do gzip "$file"; done' >> /entrypoint.sh && \
-    echo 'mv *.gz /host_dir/' >> /entrypoint.sh && \
-    chmod +x /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 
 # Make the entrypoint script executable
 RUN chmod +x /entrypoint.sh

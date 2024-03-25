@@ -14,6 +14,7 @@ HERE = Path(__file__).parent
 VENV_PATH = HERE / "nuitka_venv"
 
 REQUIREMENTS = [
+    "wheel",
     "nuitka==2.1.3",
     "zstandard==0.17.0",
     "chardet==5.2.0",
