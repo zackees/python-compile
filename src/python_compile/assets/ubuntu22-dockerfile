@@ -1,0 +1,29 @@
+# Use Ubuntu 22.04 LTS (Jammy Jellyfish) as the base image
+FROM ubuntu:22.04
+
+# Install Python 3.10 and other necessary packages
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    python3.10 \
+    python3-pip \
+    python3.10-dev \
+    dos2unix \
+    patchelf \
+    gzip \
+    && rm -rf /var/lib/apt/lists/* \
+    && python3.10 -m pip install --no-cache-dir nuitka==2.1.3 wheel
+
+# Set the working directory in the container
+WORKDIR /host_dir
+
+# Set the default file to use if none is provided
+ARG REQUIREMENTS_FILE=requirements.txt
+COPY ${REQUIREMENTS_FILE} ./requirements.txt
+
+# Copy the rest of your application's code
+COPY . /
+
+# Make the entrypoint script executable and convert to UNIX format
+RUN chmod +x /entrypoint.sh && dos2unix /entrypoint.sh
+
+# Set the entrypoint to use bash
+ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]

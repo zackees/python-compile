@@ -16,7 +16,7 @@ from python_compile.compile import python_compile
 HERE = Path(__file__).parent
 PROJECT_ROOT = HERE.parent
 DEMO_PY = PROJECT_ROOT / "src/python_compile/assets/demo_http_server.py"
-WHEEL = HERE / "data.whl"
+WHEEL = HERE / "youtube_html_parser-1.0.0-py3-none-any.whl"
 
 assert DEMO_PY.exists()
 assert WHEEL.exists()

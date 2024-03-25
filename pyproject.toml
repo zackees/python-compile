@@ -16,7 +16,7 @@ dependencies = [
     "pytest-xdist"
 ]
 # Change this with the version number bump.
-version = "1.0.6"
+version = "1.0.7"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

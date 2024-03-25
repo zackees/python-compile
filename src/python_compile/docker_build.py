@@ -12,6 +12,8 @@ HERE = Path(__file__).parent
 ASSETS = HERE / "assets"
 
 DOCKER_FILE_MAP = {
+    "ubuntu": ASSETS / "ubuntu22-dockerfile",
+    "ubuntu22": ASSETS / "ubuntu22-dockerfile",
     "debian": ASSETS / "debian-dockerfile",
     "windows": ASSETS
     / "windows-dockerfile",  # Work in progress - cross compilation through fedora
@@ -41,7 +43,7 @@ def docker_build(
     if requirements:
         extra_files[requirements] = Path("requirements.txt")
     if wheel:
-        extra_files[wheel] = Path(".compile.whl")
+        extra_files[wheel] = Path(wheel.name)
 
     docker_run(
         name=f"python-compile-{os_system}",

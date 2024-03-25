@@ -19,10 +19,12 @@ WORKDIR /host_dir
 ARG REQUIREMENTS_FILE
 COPY ${REQUIREMENTS_FILE} ./requirements.txt
 
-COPY entrypoint.sh /entrypoint.sh
-
+COPY . /
 # Make the entrypoint script executable
 RUN chmod +x /entrypoint.sh
+RUN dos2unix /entrypoint.sh
+
+
 
 # Set the entrypoint to use /bin/sh
 ENTRYPOINT ["sh", "/entrypoint.sh"]
