@@ -3,4 +3,4 @@
 set -e
 . ./activate.sh
 echo "Running unittests"
-pytest -n auto -v tests
+pytest -n 1 -v tests
