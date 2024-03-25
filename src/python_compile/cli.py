@@ -38,6 +38,12 @@ def parse_args() -> argparse.Namespace:
         help="Which requirements file to use",
         required=False,
     )
+    parser.add_argument(
+        "--pip-install-path",
+        type=Path,
+        help="Which pip install path to use",
+        required=False,
+    )
     return parser.parse_args()
 
 
@@ -46,7 +52,13 @@ def main() -> int:
     os_system = cli_args.os
     app_py = cli_args.input
     requirements_txt = cli_args.requirements
-    args = Args(app_py=app_py, requirements=requirements_txt, os=os_system)
+    pip_install_path = cli_args.pip_install_path
+    args = Args(
+        app_py=app_py,
+        requirements=requirements_txt,
+        pip_install_path=pip_install_path,
+        os=os_system,
+    )
     return python_compile(args)
 
 

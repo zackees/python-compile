@@ -1,6 +1,5 @@
 import os
 import shutil
-import subprocess
 import sys
 import tempfile
 import warnings
@@ -15,7 +14,7 @@ HERE = Path(__file__).parent
 VENV_PATH = HERE / "nuitka_venv"
 
 REQUIREMENTS = [
-    "nuitka==2.0.3",
+    "nuitka==2.1.3",
     "zstandard==0.17.0",
     "chardet==5.2.0",
     "ordered-set==4.1.0",
@@ -54,25 +53,31 @@ def clean_dir(path: str) -> None:
         warnings.warn(f"Failed to clean directory: {path} with error: {e}")
 
 
-def run_native_build(app_py: Path, requirements_txt: Path | None) -> int:
+def full_path(path: Path | str) -> str:
+    """Get the full path."""
+    return str(Path(path).absolute())
+
+
+def run_native_build(
+    app_py: Path, requirements_txt: Path | None, pip_install_path: Path | None
+) -> int:
     """Run the native windows build."""
     print("Running native build")
     with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp_dir:
-        print(f"Creating temporary directory: {tmp_dir}")
+        print(f"Creating temporary directory: {full_path(tmp_dir)}")
         full_tmp_path = os.path.abspath(tmp_dir)
         register(clean_dir, full_tmp_path)
         env_path = Path(tmp_dir) / "nuitka_venv"
-        iso_env = IsolatedEnvironment(env_path, REQS)
+        iso_env = IsolatedEnvironment(env_path, REQS, full_isolation=True)
         if requirements_txt:
-            subprocess.run(
-                ["pip", "install", "-r", requirements_txt],
-                env=iso_env.environment(),
-                check=True,
-            )
+            print(f"Installing requirements from {full_path(requirements_txt)}")
+            iso_env.run(["pip", "install", "-r", requirements_txt])
+        if pip_install_path:
+            print(f"Installing {full_path(pip_install_path)}")
+            iso_env.run(["pip", "install", pip_install_path])
         cmd_list: list[str] = generate_cmd_list(app_py)
-        subprocess.run(
-            cmd_list,
-            env=iso_env.environment(),
-            check=True,
-        )
+        iso_env.run(cmd_list)
+        basename = app_py.stem
+        outexe = f"{basename}.exe" if IS_WINDOWS else f"{basename}.bin.gz"
+        print(f"Generated executable: {full_path(outexe)}")
         return 0

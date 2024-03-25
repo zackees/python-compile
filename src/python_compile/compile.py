@@ -25,6 +25,7 @@ DOCKER_FILE_MAP = {
 class Args:
     app_py: Path
     requirements: Path | None = None
+    pip_install_path: Path | None = None
     os: str | None = None
 
 
@@ -37,15 +38,24 @@ def python_compile(args: Args) -> int:
     os_system = args.os
     app_py = args.app_py
     requirements_txt = args.requirements
+    pip_install_path = args.pip_install_path
     if os_system == "windows":
         if os.name != "nt":
             # Work in progress, compile windows apps from docker.
             print("You must run this on a windows machine")
             return 1
-        rtn = run_native_build(app_py=app_py, requirements_txt=requirements_txt)
+        rtn = run_native_build(
+            app_py=app_py,
+            requirements_txt=requirements_txt,
+            pip_install_path=pip_install_path,
+        )
         return rtn
     if os_system is None or os_system == "native":
-        rtn = run_native_build(app_py=app_py, requirements_txt=requirements_txt)
+        rtn = run_native_build(
+            app_py=app_py,
+            requirements_txt=requirements_txt,
+            pip_install_path=pip_install_path,
+        )
         return rtn
 
     dockerpath: Path | None = DOCKER_FILE_MAP.get(os_system)
