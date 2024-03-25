@@ -6,7 +6,8 @@ import argparse
 import sys
 from pathlib import Path
 
-from python_compile.compile import DOCKER_FILE_MAP, Args, python_compile
+from python_compile.compile import Args, python_compile
+from python_compile.docker_build import DOCKER_FILE_MAP
 
 CHOICES = list(DOCKER_FILE_MAP.keys())
 
