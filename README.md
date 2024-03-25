@@ -45,6 +45,7 @@ Run `./lint.sh` to find linting errors using `pylint`, `flake8` and `mypy`.
     * https://hub.docker.com/r/sickcodes/docker-osx
 
 # Releases
+  * 1.0.9: Better support for `ubuntu`
   * 1.0.8: Enables experimental `ubuntu` docker image support.
   * 1.0.7: Implement wheel support for the docker images.
   * 1.0.6: Better support for package isolation for native builds.
