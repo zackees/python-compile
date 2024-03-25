@@ -49,7 +49,7 @@ def docker_build(
         name=f"python-compile-{os_system}",
         dockerfile_or_url=dockerpath,
         cwd=os.getcwd(),
-        cmd_list=[str(py_path)],
+        cmd_list=[py_path.as_posix()],
         extra_files=extra_files,
     )
     return 0
