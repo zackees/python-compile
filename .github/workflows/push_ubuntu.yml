@@ -15,10 +15,11 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install GCC + Build Dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y gcc g++ make build-essential
+    - name: Setup C/C++ Compiler
+      id: setup-compiler
+      uses: rlalik/setup-cpp-compiler@master
+      with:
+        compiler: latest
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
