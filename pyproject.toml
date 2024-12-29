@@ -14,7 +14,6 @@ dependencies = [
     "docker-run-cmd~=1.0.14",
     "isolated-environment==1.3.4",
     "pytest-xdist",
-    "pyMSVC",
 
 ]
 # Change this with the version number bump.
