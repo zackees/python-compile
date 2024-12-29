@@ -10,8 +10,6 @@ Compile python apps to linux executables using docker.
 ![image](https://github.com/zackees/python-compile/assets/6856673/108c9af7-2a6f-4388-a2f3-d05aa826990e)
 
 
-
-
 This project will use docker to compile your one file python app into a binary that's runnable on many
 linux systems. This is the easiest way to build an app and may work directly out of the box for many setups.
 
