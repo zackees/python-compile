@@ -1,6 +1,6 @@
 #!/bin/bash
 
 set -e
-. ./activate.sh
+. ./activate
 echo "Running unittests"
 pytest -n 1 -v tests
