@@ -16,9 +16,17 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install GCC
+    - name: Install GCC and Xcode tools
       run: |
         brew install gcc
+        brew upgrade
+        
+    - name: Install macOS SDK headers
+      run: |
+        sudo rm -rf /Library/Developer/CommandLineTools
+        xcode-select --install || true
+        sudo xcode-select --reset
+        sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
 
     - name: Install dependencies
       run: |
