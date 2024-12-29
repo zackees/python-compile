@@ -20,6 +20,8 @@ jobs:
       uses: rlalik/setup-cpp-compiler@master
       with:
         compiler: latest
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v3
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
