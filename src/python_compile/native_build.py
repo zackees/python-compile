@@ -15,7 +15,7 @@ VENV_PATH = HERE / "nuitka_venv"
 
 REQUIREMENTS = [
     "wheel",
-    "nuitka==2.1.3",
+    "nuitka==2.5.9",
     "zstandard==0.23.0",
     "chardet==5.2.0",
     "ordered-set==4.1.0",
