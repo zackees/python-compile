@@ -13,7 +13,9 @@ classifiers = ["Programming Language :: Python :: 3"]
 dependencies = [
     "docker-run-cmd~=1.0.14",
     "isolated-environment==1.3.4",
-    "pytest-xdist"
+    "pytest-xdist",
+    "pyMSVC",
+
 ]
 # Change this with the version number bump.
 version = "1.0.15"

@@ -64,6 +64,12 @@ def run_native_build(
 ) -> int:
     """Run the native windows build."""
     print("Running native build")
+
+    if sys.platform.startswith("win"):
+        import pyMSVC
+
+        pyMSVC.setup_environment()
+
     with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp_dir:
         print(f"Creating temporary directory: {full_path(tmp_dir)}")
         full_tmp_path = os.path.abspath(tmp_dir)
