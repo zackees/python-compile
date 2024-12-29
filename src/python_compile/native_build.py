@@ -33,6 +33,7 @@ def generate_cmd_list(app_py: Path) -> list[str]:
     """Generate the command list."""
     head_cmd_list = ["python", "-m", "nuitka"]
     body_cmd_list = [
+        "--assume-yes-for-downloads",
         "--standalone",
         "--follow-imports",
         "--onefile",

@@ -1,0 +1,28 @@
+name: Docker Tests
+
+on: [push]
+
+jobs:
+  docker-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Build and test Debian container
+        run: |
+          docker compose build debian
+          docker compose run debian pytest tests
+          
+      - name: Build and test Ubuntu container
+        run: |
+          docker compose build ubuntu
+          docker compose run ubuntu pytest tests
+          
+      # Windows container tests are commented out until Windows container support is fully implemented
+      #- name: Build and test Windows container
+      #  run: |
+      #    docker compose build windows
+      #    docker compose run windows pytest tests

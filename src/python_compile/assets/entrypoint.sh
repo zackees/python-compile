@@ -27,7 +27,7 @@ else
   echo "Did not find any .whl files in root directory"
 fi
 
-python3 -m nuitka --standalone --follow-imports --onefile --lto=yes --python-flag=-OO /host_dir/"$@"
+python3 -m nuitka --assume-yes-for-downloads --standalone --follow-imports --onefile --lto=yes --python-flag=-OO /host_dir/"$@"
 for file in $(find . -maxdepth 1 -type f -name "*.bin"); do chmod +x "$file"; done
 for file in $(find . -maxdepth 1 -type f -name "*.bin"); do gzip "$file"; done
 
