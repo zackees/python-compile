@@ -15,12 +15,11 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-
-    - name: Install GCC and Xcode tools
-      run: |
-        brew install gcc
-        brew upgrade
-        
+    - name: Setup C/C++ Compiler
+      id: setup-compiler
+      uses: rlalik/setup-cpp-compiler@master
+      with:
+        compiler: latest
     - name: Install macOS SDK headers
       run: |
         sudo rm -rf /Library/Developer/CommandLineTools
