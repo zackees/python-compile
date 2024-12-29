@@ -43,6 +43,7 @@ Run `./lint.sh` to find linting errors using `pylint`, `flake8` and `mypy`.
     * https://hub.docker.com/r/sickcodes/docker-osx
 
 # Releases
+  * 1.0.16: Added a lot of overdue fixes and upgrades of deps.
   * 1.0.15: Added `--os ubuntu` and `--os ubuntu22`
   * 1.0.14: Bug fix
   * 1.0.13: Bug fix
