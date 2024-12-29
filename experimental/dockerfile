@@ -22,6 +22,7 @@ RUN dnf -y install \
     mingw64-qt5-qtbase-devel \
     mingw64-qt5-qtsvg \
     mingw64-qt5-qttools-tools \
+    patchelf \
     procps-ng \
     ragel \
   && dnf clean all
