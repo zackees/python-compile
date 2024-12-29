@@ -24,20 +24,6 @@ package-dir = {"" = "src"}
 [tool.ruff]
 line-length = 200
 
-[tool.pylint."MESSAGES CONTROL"]
-good-names = [
-    "c",
-    "i",
-    "ok",
-    "id",
-    "e",
-    "f"
-]
-disable = [
-    "missing-function-docstring",
-    "missing-module-docstring"
-]
-
 [tool.isort]
 profile = "black"
 
