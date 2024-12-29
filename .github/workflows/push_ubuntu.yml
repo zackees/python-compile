@@ -24,7 +24,7 @@ jobs:
       uses: docker/setup-buildx-action@v3
     - name: Install dependencies
       run: |
-        apt install patchelf
+        sudo apt-get install patchelf
         python -m pip install --upgrade pip
         python -m pip install -e .
         python -m pip install pytest
